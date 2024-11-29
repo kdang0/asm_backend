@@ -48,6 +48,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ mongoUrl: db.client.s.url }),
+    cookie: {
+      secure: true,
+      sameSite: "None"
+    }
   })
 );
 
