@@ -72,14 +72,14 @@ app.use(passport.session());
 app.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
-    if (!user) return res.status(401).json({ message: "Invalid username or password" });
+    if (!user) return res.json({ message: "Invalid username or password" });
     
     // Explicitly call req.login
     req.logIn(user, (err) => {
       if (err) return next(err);
       res.status(200).json({ message: "Login successful", user });
     });
-  })(req, res, next);
+  })
 });
 
 //destroys session store
