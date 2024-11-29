@@ -61,13 +61,26 @@ app.use(passport.session());
 //===== Routes =====
 
 //authenticates user using passport middleware
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/login-success",
-    failureRedirect: "/login-failure",
-  })
-);
+// app.post(
+//   "/login",
+//   passport.authenticate("local", {
+//     successRedirect: "/login-success",
+//     failureRedirect: "/login-failure",
+//   })
+// );
+
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).json({ message: "Invalid username or password" });
+    
+    // Explicitly call req.login
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      res.status(200).json({ message: "Login successful", user });
+    });
+  })(req, res, next);
+});
 
 //destroys session store
 app.delete("/logout", (req, res, next) => {
