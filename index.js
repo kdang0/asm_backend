@@ -77,6 +77,7 @@ app.delete("/logout", (req, res, next) => {
 
 //sends user information on successful authentication
 app.get("/login-success", (req, res, next) => {
+  console.log("USER: ", req.user);
   res.json({ user: req.user });
 });
 
